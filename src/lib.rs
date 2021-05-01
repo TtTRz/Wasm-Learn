@@ -1,10 +1,5 @@
-#![no_std]
+#![no_mangle]
 #![no_main]
-
-#[panic_handler]
-fn panic(_: &core::panic::PanicInfo) -> ! {
-    loop {}
-}
 
 extern "C" {
     fn print_char(c: u8);
