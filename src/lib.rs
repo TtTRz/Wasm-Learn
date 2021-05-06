@@ -14,5 +14,3 @@ pub extern "C" fn main() {
         }
     }
 }
-
-
