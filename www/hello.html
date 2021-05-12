@@ -1,0 +1,71 @@
+<html lang="en">
+
+<head>
+</head>
+
+<body>
+
+</body>
+<script>
+  // 创建内存对象 wasmMem
+  let wasmMem = new WebAssembly.Memory({ initial: 1 });
+  // 从内存中获取字节流
+  function printStr(offset, length) {
+    let bytes = new Uint8Array(wasmMem.buffer, offset, length);
+    // 解码输出
+    let string = new TextDecoder('utf8').decode(bytes)
+    console.log(string)
+  };
+  let importObj = {
+    js: {
+      print: printStr,
+      mem: wasmMem
+    }
+  }
+  // 编译 .wasm 并第一次实例化
+  // fetch('hello.wasm')
+  //   .then(res => res.arrayBuffer())
+  // // 编译并实例化
+  //   .then(bytes => WebAssembly.instantiate(bytes, importObj))
+  //   .then(result => result.instance.exports.hello()) // 返回 {WebAssembly.Instance, WebAssembly.Module}
+
+  fetch('hello.wasm')
+    .then(res => res.arrayBuffer())
+    // 编译为 Module
+    .then(bytes => WebAssembly.compile(bytes))
+    .then(mod => {
+      // 编译一次 多次调用
+      WebAssembly.instantiate(mod, importObj).then((res => res.exports.hello()))
+      WebAssembly.instantiate(mod, importObj).then((res => res.exports.hello()))
+    })
+  fetch('hello.wasm')
+    .then(res => res.arrayBuffer())
+    .then(bytes => {
+      let valid = WebAssembly.validate(bytes)
+      console.log(valid)
+    })
+  // fetch("hello.wasm").then(res => WebAssembly.compileStreaming(res).then(mod => console.log(mod.toString())))
+
+  // WebAssembly.Module 构造器方法用于同步编译 .wasm 为 Module
+  fetch('hello.wasm').then(res => res.arrayBuffer())
+    .then(bytes => {
+      let module = new WebAssembly.Module(bytes)
+      console.log(module.toString())
+      // 获取模块导出信息
+      let exports = WebAssembly.Module.exports(module)
+      console.log(exports)
+      // 获取模块导入信息
+      let imports = WebAssembly.Module.imports(module)
+      console.log(imports)
+    })
+
+  // WebAssembly.Instance 构造器方法用于同步创建模块实例
+  fetch('hello.wasm').then(res => res.arrayBuffer())
+    .then(bytes => WebAssembly.compile(bytes))
+    .then(mod => {
+      let instance = new WebAssembly.Instance(mod, importObj)
+      console.log(instance)
+    })
+</script>
+
+</html>

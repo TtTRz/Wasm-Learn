@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+
+</body>
+<script>
+  fetch('show_me_the_answer.wasm')
+    .then(res => {
+      return res.arrayBuffer()
+    })
+    .then(bytes => {
+      console.log(bytes)
+      return WebAssembly.instantiate(bytes)
+    })
+    .then(result => {
+      console.log(result.instance.exports.showMeTheAnswer)
+      console.log(result.instance.exports.showMeTheAnswer())
+    })
+</script>
+
+</html>
