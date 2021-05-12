@@ -66,6 +66,12 @@
       let instance = new WebAssembly.Instance(mod, importObj)
       console.log(instance)
     })
+  // WebAssembly.Memory
+  let memory = new WebAssembly.Memory({
+    initial: 1, // 内存初始容量，页为单位 1页 = 64kb
+    maximum: 1  // 可选 内存最大容量
+  })
+  
 </script>
 
 </html>

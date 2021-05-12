@@ -1,0 +1,14 @@
+<script>
+  fetch("export_mem.wasm").then(res => res.arrayBuffer())
+    .then(bytes => WebAssembly.instantiate(bytes))
+    .then(res => {
+      let instance = res.instance
+      console.log(instance.exports)
+      console.log(instance.exports.memory.buffer.byteLength)
+      instance.exports.fibonacci(10)
+      let i32 = new Uint32Array(instance.exports.memory.buffer);
+      for (let i = 0; i < 10; i++) {
+        console.log(i[32])
+      }
+    })
+</script>

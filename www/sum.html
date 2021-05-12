@@ -1,0 +1,20 @@
+<script>
+  let memory = new WebAssembly.Memory({
+    initial: 1,
+    maximum: 10
+  })
+  fetch("sum.wasm").then(res => res.arrayBuffer())
+    .then(bytes => WebAssembly.instantiate(bytes, {
+      js: {
+        mem: memory
+      }
+    }))
+    .then(res => {
+      let instance = res.instance;
+      let i32 = new Uint32Array(memory.buffer);
+      for (let i = 0; i < 32; i++) {
+        i32[i] = i;
+      }
+      console.log(instance.exports.sum(0, 32))
+    })
+</script>
