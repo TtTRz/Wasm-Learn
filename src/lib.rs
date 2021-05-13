@@ -5,7 +5,7 @@ extern "C" {
     fn print_char(c: u8);
 }
 
-#[no_mangle]
+#[no_mangble]
 pub extern "C" fn main() {
     unsafe {
         let s = "Hello, World!\n";
