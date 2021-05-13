@@ -1,0 +1,10 @@
+<script>
+  fetch("call_by_index.wasm")
+    .then(res => res.arrayBuffer())
+    .then(bytes => WebAssembly.instantiate(bytes))
+    .then(res => {
+      let { instance } = res;
+      let r = instance.exports.call_by_index(1, 20)
+      console.log(r)
+    })
+</script>

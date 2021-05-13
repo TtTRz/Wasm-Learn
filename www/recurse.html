@@ -1,0 +1,10 @@
+<script>
+  fetch("recurse.wasm")
+    .then(res => res.arrayBuffer())
+    .then(bytes => WebAssembly.instantiate(bytes))
+    .then(re => {
+      let { instance } = re
+      let r = instance.exports.sum(10)
+      console.log(r)
+    })
+</script>

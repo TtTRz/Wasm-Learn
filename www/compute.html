@@ -1,0 +1,9 @@
+<script>
+  fetch("compute.wasm")
+    .then(res => res.arrayBuffer())
+    .then(bytes => WebAssembly.instantiate(bytes))
+    .then(res => {
+      let sum = res.instance.exports.compute(1, 2.0);
+      console.log(sum)
+    }) 
+</script>
