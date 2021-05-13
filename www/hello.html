@@ -23,16 +23,22 @@
     }
   }
   // 编译 .wasm 并第一次实例化
-  // fetch('hello.wasm')
-  //   .then(res => res.arrayBuffer())
-  // // 编译并实例化
-  //   .then(bytes => WebAssembly.instantiate(bytes, importObj))
-  //   .then(result => result.instance.exports.hello()) // 返回 {WebAssembly.Instance, WebAssembly.Module}
+  fetch('hello.wasm')
+    .then(res => res.arrayBuffer())
+    // 编译并实例化
+    .then(bytes => WebAssembly.instantiate(bytes, importObj))
+    .then(result => {
+      console.log(result)
+      result.instance.exports.hello()
+    }) // 返回 {WebAssembly.Instance, WebAssembly.Module}
 
   fetch('hello.wasm')
     .then(res => res.arrayBuffer())
     // 编译为 Module
-    .then(bytes => WebAssembly.compile(bytes))
+    .then(bytes => {
+      console.log(bytes)
+      return WebAssembly.compile(bytes)
+    })
     .then(mod => {
       // 编译一次 多次调用
       WebAssembly.instantiate(mod, importObj).then((res => res.exports.hello()))
@@ -71,7 +77,7 @@
     initial: 1, // 内存初始容量，页为单位 1页 = 64kb
     maximum: 1  // 可选 内存最大容量
   })
-  
+
 </script>
 
 </html>
