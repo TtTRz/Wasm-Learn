@@ -3,10 +3,12 @@
     .then((resp) => resp.arrayBuffer())
     .then(bytes => WebAssembly.instantiate(bytes))
     .then((result) => {
+      // 获取导出信息
       let exports = WebAssembly.Module.exports(result.module)
       for (let e in exports) {
         console.log(exports[e])
       }
+      // 实例
       console.log(result.instance.exports)
     })
 </script>

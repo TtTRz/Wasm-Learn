@@ -1,0 +1,42 @@
+<script>
+  function js_print_i32(param) {
+    console.log(param)
+  }
+  function js_print_f32(param) {
+    console.log(param)
+    return param * 2.0
+  }
+  let memory = new WebAssembly.Memory({
+    initial: 1,
+    maximum: 10,
+  })
+  let table = new WebAssembly.Table({
+    element: 'anyfunc',
+    initial: 2
+  })
+  let importObj = {
+    js: {
+      print_i32: js_print_i32,
+      print_f32: js_print_f32,
+      memory,
+      table,
+      global_pi: 3.14
+    }
+  }
+  fetch("imports.wasm")
+    .then(res => res.arrayBuffer())
+    .then(bytes => WebAssembly.compile(bytes))
+    .then(module => {
+      let imports = WebAssembly.Module.imports(module)
+      for (let i in imports) {
+        console.log(imports[i])
+      }
+      return module
+    })
+    .then(module => WebAssembly.instantiate(module, importObj))
+    .then(res => {
+      console.log(res)
+      console.log(res.exports.print_pi())
+    })
+
+</script>
