@@ -1,0 +1,13 @@
+<script>
+  function js_print_f32(param) {
+    console.log(param)
+  }
+  let importObj = {
+    js: {
+      print_f32: js_print_f32
+    }
+  }
+  fetch("start.wasm")
+    .then(res => res.arrayBuffer())
+    .then(bytes => WebAssembly.instantiate(bytes, importObj))
+</script>
